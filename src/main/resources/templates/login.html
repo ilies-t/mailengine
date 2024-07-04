@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html style="
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <title>Fishemi</title>
+</head>
+<body style="
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 30px 2% 10px 2%;
+    margin: auto;
+    max-width: 700px;
+    text-align: left;
+    color: #101825;
+    font-family: 'Inter Medium', sans-serif;
+">
+
+<img alt="Fishemi"
+     height="500"
+     src="https://lh3.googleusercontent.com/drive-viewer/AKGpihYHaOzrFHsMCY9AgKqEO5wBpMs_t8BNifrNDwGDFzYvt5trAYyEjKGCspcybKSemHLcXZsedG_QOeZWHWDM7zp1qGCmJceGSP8=w1920-h911"
+     style="
+    display: block;
+    margin: auto;
+    height: 75px;
+    width: auto;
+" title="Logo" width="500"/>
+
+<h1 style="
+    font-size: 2.5em;
+    color: #000000;
+    margin: 10px auto 30px auto;
+    font-weight: bold;
+">Votre lien de connexion</h1>
+
+<!--/*@thymesVar id="firstName" type="java.lang.String"*/-->
+<p th:utext="
+  'Bonjour ' + ${#strings.escapeXml(firstName)} + '!'
+  + '<br/>'
+  + '<br/>'
+  + 'Nous avons reçu une demande de connexion à votre compte. Pour des raisons de sécurité, nous avons généré un lien de connexion unique et temporaire que vous pouvez utiliser pour accéder à votre compte.'
+"></p>
+
+<!--/*@thymesVar id="otpUrl" type="java.lang.String"*/-->
+<a style="
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    position: relative;
+    padding: 15px 20px;
+    margin: 20px auto auto auto;
+    width: max-content;
+    background-color: #101825;
+    color: #dcff6e;
+    font-size: 17px;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+" target="_blank" th:href="@{${otpUrl}}">Me connecter</a>
+
+<p>
+  Notez que ce lien expire dans 15 minutes et qu'il ne peut être utilisé qu'une seule fois. Si vous ne parvenez pas à
+  vous connecter dans ce délai, vous devrez demander un nouveau lien de connexion.
+  <br/>
+  <br/>
+  Si vous n'avez pas demandé de lien de connexion, veuillez ignorer ce message et contacter notre équipe de support si
+  vous avez des préoccupations concernant la sécurité de votre compte.
+</p>
+
+<p style="
+    margin-top: 40px;
+    color: rgba(0,0,0,0.35);
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: 400;
+">En espérant vous revoir vite,<br/>L'équipe Fishemi.<br/><br/></p>
+</body>
+</html>

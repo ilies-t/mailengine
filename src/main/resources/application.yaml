@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  application.name: mailengine
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  rabbitmq:
+    addresses: ${SPRING_RABBITMQ_ADDRESS}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_EMAIL_ADDRESS}
+    password: ${SPRING_EMAIL_PASSWORD}
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+
+email-from: ${SPRING_EMAIL_ADDRESS}
+campaign-email-event-queue: ${SPRING_CAMPAIGN_QUEUE}
+login-email-event-queue: ${SPRING_LOGIN_QUEUE}
+website-login-url: ${SPRING_LOGIN_URL}

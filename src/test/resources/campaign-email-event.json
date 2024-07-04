@@ -1,0 +1,17 @@
+{
+  "template_name": "MICROSOFT",
+  "html_paragraph_content": "<span>Just a test :)</span>",
+  "campaign_id": "18bd2562-c5fc-4191-9d92-c5c059448230",
+  "employees": [
+    {
+      "id": "e20a48f4-ad3b-4ce2-9690-03e09421dd85",
+      "full_name": "Maxine Rakestraw",
+      "email": "mrakestraw0@pixelgagnant.net"
+    },
+    {
+      "id": "a1136387-0786-4892-a445-77cbed88f34e",
+      "full_name": "Ellie Conduit",
+      "email": "econduit2@pixelgagnant.net"
+    }
+  ]
+}
