@@ -64,8 +64,16 @@ jobs:
       run: |-
         docker push "us.gcr.io/$PROJECT_ID/$IMAGE:$BRANCH_NAME"
 
-    # Deploy the Docker image to the GKE cluster
-    - name: Deploy
+    # Deploy the Docker image to the GKE cluster (PROD)
+    - name: Deploy to PROD
+      if: ${{ env.BRANCH_NAME == 'master' }}
       run: |-
         kubectl rollout restart deployment/$DEPLOYMENT_NAME
+        kubectl get pods
+
+    # Deploy the Docker image to the GKE cluster (PREPROD)
+    - name: Deploy to PREPROD
+      if: ${{ env.BRANCH_NAME == 'develop' }}
+      run: |-
+        kubectl rollout restart deployment/$DEPLOYMENT_NAME-preprod
         kubectl get pods
