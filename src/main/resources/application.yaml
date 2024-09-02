@@ -21,4 +21,5 @@ spring:
 email-from: ${SPRING_EMAIL_ADDRESS}
 campaign-email-event-queue: ${SPRING_CAMPAIGN_QUEUE}
 login-email-event-queue: ${SPRING_LOGIN_QUEUE}
-website-login-url: ${SPRING_LOGIN_URL}
+website-url: ${SPRING_WEBSITE_URL}
+api-url: ${SPRING_API_URL}
