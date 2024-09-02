@@ -48,7 +48,7 @@ class MailingServiceTest {
     // when
     Mockito.doNothing().when(this.mailSenderService)
       .sendEmail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
-    Mockito.when(this.mailSenderService.getCampaignHtmlContent(Mockito.any(), Mockito.any()))
+    Mockito.when(this.mailSenderService.getCampaignHtmlContent(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
       .thenReturn("<h1>Title</h1>");
     Mockito.when(this.eventRepository.save(Mockito.any())).thenReturn(new EventEntity());
     this.mailingService.handleCampaignEmailEventQueue(message);

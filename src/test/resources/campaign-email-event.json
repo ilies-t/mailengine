@@ -1,17 +1,14 @@
 {
   "template_name": "MICROSOFT",
-  "html_paragraph_content": "<span>Just a test :)</span>",
-  "campaign_id": "18bd2562-c5fc-4191-9d92-c5c059448230",
+  "html_paragraph_content": "Cher(e) {{employeeName}},\n\nDans le but d'assurer la sécurité de votre compte et des données de \"Pixel Gagnant\", il est recommandé de changer régulièrement votre mot de passe. \n\nAfin de garantir la protection de vos informations, nous vous invitons à modifier votre mot de passe en cliquant sur le bouton ci-dessous :\n\n{{boutton}}\n\nCette action simple permet de protéger votre compte contre d'éventuelles intrusions. Nous vous remercions de votre compréhension et de votre collaboration.\n\nBien cordialement,\n\nL'équipe de \"Pixel Gagnant\"\n\n(Note : Si vous avez des difficultés à changer votre mot de passe, n'hésitez pas à contacter notre service d'assistance à l'adresse suivante : {{employeeEmail}})",
+  "subject": "Ceci est un test",
+  "company_name": "Pixel Gagnant",
+  "campaign_id": "faf5c373-c71b-42d0-94e5-a018a0ee6e86",
   "employees": [
     {
-      "id": "e20a48f4-ad3b-4ce2-9690-03e09421dd85",
-      "full_name": "Maxine Rakestraw",
-      "email": "mrakestraw0@pixelgagnant.net"
-    },
-    {
-      "id": "a1136387-0786-4892-a445-77cbed88f34e",
-      "full_name": "Ellie Conduit",
-      "email": "econduit2@pixelgagnant.net"
+      "id": "7b7c217b-13f8-4540-9ec6-e8c3a5ab211e",
+      "full_name": "Manu EBOX6",
+      "email": "ebox6@pixelgagnant.net"
     }
   ]
 }

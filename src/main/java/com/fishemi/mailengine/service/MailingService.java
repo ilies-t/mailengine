@@ -15,6 +15,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -32,17 +33,28 @@ public class MailingService {
 
   public void handleCampaignEmailEventQueue(final CampaignEmailEventDto message) {
     message.getEmployees().forEach(employee -> {
-      final String htmlContent = this.mailSenderService.getCampaignHtmlContent(message.getTemplateName(), employee);
+      // event id is also used as a tracking pixel id
+      final UUID eventId = UUID.randomUUID();
+
+      final String htmlContent = this.mailSenderService.getCampaignHtmlContent(
+        eventId,
+        message.getTemplateName(),
+        message.getCompanyName(),
+        employee,
+        message.getHtmlParagraphContent(),
+        message.getSubject()
+      );
       try {
-        this.mailSenderService.sendEmail(employee.getEmail(), "Votre lien de connexion Fishemi", htmlContent);
+        this.mailSenderService.sendEmail(employee.getEmail(), message.getSubject(), htmlContent);
       } catch (MessagingException e) {
         log.error("Error happens while sending campaign email to employee, employee={}", employee, e);
       }
 
       final var event = EventEntity.builder()
+        .id(eventId)
         .userId(employee.getId())
         .campaignId(message.getCampaignId())
-        .eventType("SENT")
+        .eventType("sent")
         .build();
       this.eventRepository.save(event);
     });

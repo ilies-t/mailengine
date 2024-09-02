@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.UUID;
+
 @Controller
 @Slf4j
 public class MailTestController {
@@ -35,6 +37,13 @@ public class MailTestController {
   ) {
     log.info("HTTP handling getCampaignMailTest, templateName={}, loginEmailEventDto={}",
       templateName, campaignEmailEventEmployeeDto);
-    return ResponseEntity.ok(this.mailSenderService.getCampaignHtmlContent(templateName, campaignEmailEventEmployeeDto));
+    return ResponseEntity.ok(this.mailSenderService.getCampaignHtmlContent(
+      UUID.randomUUID(),
+      templateName,
+      "My company name",
+      campaignEmailEventEmployeeDto,
+      "text content",
+      "Email subject here"
+    ));
   }
 }
