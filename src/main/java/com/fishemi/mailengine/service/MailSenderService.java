@@ -15,6 +15,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -23,18 +24,21 @@ public class MailSenderService {
   private final JavaMailSender emailSender;
   private final SpringTemplateEngine templateEngine;
   private final String emailFrom;
-  private final String webSiteLoginUrl;
+  private final String webSiteUrl;
+  private final String apiUrl;
 
   public MailSenderService(
     final JavaMailSender emailSender,
     final SpringTemplateEngine templateEngine,
     @Value("${email-from}") final String emailFrom,
-    @Value("${website-login-url}") final String webSiteLoginUrl
+    @Value("${website-url}") final String webSiteUrl,
+    @Value("${api-url}") final String apiUrl
   ) {
     this.templateEngine = templateEngine;
     this.emailSender = emailSender;
     this.emailFrom = emailFrom;
-    this.webSiteLoginUrl = webSiteLoginUrl;
+    this.webSiteUrl = webSiteUrl;
+    this.apiUrl = apiUrl;
   }
 
   public void sendEmail(final String toEmail, final String subject, final String body) throws MessagingException {
@@ -51,11 +55,40 @@ public class MailSenderService {
   }
 
   public String getCampaignHtmlContent(
+    final UUID eventId,
     final TemplateNameEnum templateName,
-    final CampaignEmailEventEmployeeDto employee
+    final String companyName,
+    final CampaignEmailEventEmployeeDto employee,
+    String htmlParagraphContent,
+    final String subject
   ) {
+    // create mail content
+    final String logoTrackingPixelUrl = UriComponentsBuilder.fromUriString(this.apiUrl)
+      .path("/assets/cdn/images/logo/100x100/" + templateName.toString().toLowerCase() + "/" + eventId.toString() + ".png")
+      .toUriString();
+    final String formUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
+      .path(companyName.replaceAll("\s*", "-").toLowerCase() + "/assets/my-account/update-creds/" + eventId.toString())
+      .toUriString();
+
+    htmlParagraphContent = htmlParagraphContent.replaceAll("\\{\\{employeeName}}", employee.getFullName())
+      .replaceAll("\\{\\{boutton}}", """
+        <a
+          data-linkindex="0" rel="noopener noreferrer"
+          style="display:inline-block; background:#2172b9; color:white; font-family:Helvetica,Arial,sans-serif; font-size:14px; font-weight:600; margin:0; text-decoration:none; text-transform:none; padding:0px 25px 10px 25px; border-radius:0"
+          href="%s"
+        >
+          Modifier votre mot de passe
+        </a>
+        """.formatted(formUrl))
+      .replaceAll("\\{\\{employeeEmail}}", employee.getEmail());
+
     final Context context = getThymeleafContext(Map.of(
-      "fullName", employee.getFullName(), "email", employee.getEmail()
+      "fullName", employee.getFullName(),
+      "email", employee.getEmail(),
+      "subject", subject,
+      "formUrl", formUrl,
+      "htmlParagraphContent", htmlParagraphContent,
+      "logoTrackingPixelUrl", logoTrackingPixelUrl
     ));
     return switch (templateName) {
       case TemplateNameEnum.GOOGLE -> this.templateEngine.process("google.html", context);
@@ -65,7 +98,8 @@ public class MailSenderService {
   }
 
   public String getLoginHtmlContent(final LoginEmailEventDto message) {
-    final String otpUrl = UriComponentsBuilder.fromUriString(this.webSiteLoginUrl)
+    final String otpUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
+      .path("/login")
       .queryParam("email", message.getEmail())
       .queryParam("token", message.getOtpCode())
       .toUriString();

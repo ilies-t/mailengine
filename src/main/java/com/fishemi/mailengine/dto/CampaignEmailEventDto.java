@@ -19,8 +19,13 @@ public class CampaignEmailEventDto {
   @JsonProperty("template_name")
   private TemplateNameEnum templateName;
 
+  @JsonProperty("company_name")
+  private String companyName;
+
   @JsonProperty("html_paragraph_content")
   private String htmlParagraphContent;
+
+  private String subject;
 
   private List<CampaignEmailEventEmployeeDto> employees;
 }
