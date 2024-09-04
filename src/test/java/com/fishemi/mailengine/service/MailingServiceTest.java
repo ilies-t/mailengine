@@ -36,9 +36,9 @@ class MailingServiceTest {
   void handleCampaignEmailEventQueue_test() throws MessagingException {
     // given
     final List<CampaignEmailEventEmployeeDto> employees = List.of(
-      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID()).email("email-1@gmail.com").fullName("Email 1").build(),
-      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID()).email("email-2@gmail.com").fullName("Email 2").build(),
-      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID()).email("email-3@gmail.com").fullName("Email 3").build()
+      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID().toString()).email("email-1@gmail.com").fullName("Email 1").build(),
+      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID().toString()).email("email-2@gmail.com").fullName("Email 2").build(),
+      CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID().toString()).email("email-3@gmail.com").fullName("Email 3").build()
     );
     final CampaignEmailEventDto message = new CampaignEmailEventDto();
     message.setCampaignId(UUID.randomUUID());

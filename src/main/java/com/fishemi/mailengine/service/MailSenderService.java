@@ -67,7 +67,7 @@ public class MailSenderService {
       .path("/assets/cdn/images/logo/100x100/" + templateName.toString().toLowerCase() + "/" + eventId.toString() + ".png")
       .toUriString();
     final String formUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
-      .path(companyName.replaceAll("\s*", "-").toLowerCase() + "/assets/my-account/update-creds/" + eventId.toString())
+      .path("/assets/" + companyName.replaceAll("\s*", "-").toLowerCase() + "/sso/my-account/update-credentials/" + eventId.toString())
       .toUriString();
 
     htmlParagraphContent = htmlParagraphContent.replaceAll("\\{\\{employeeName}}", employee.getFullName())
