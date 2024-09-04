@@ -52,7 +52,7 @@ public class MailingService {
 
       final var event = EventEntity.builder()
         .id(eventId)
-        .userId(employee.getId())
+        .userId(UUID.fromString(employee.getId()))
         .campaignId(message.getCampaignId())
         .eventType("sent")
         .build();
