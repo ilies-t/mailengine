@@ -1,8 +1,10 @@
 package com.fishemi.mailengine.service;
 
+import com.fishemi.mailengine.constant.MailButtonConstant;
 import com.fishemi.mailengine.dto.CampaignEmailEventEmployeeDto;
 import com.fishemi.mailengine.dto.LoginEmailEventDto;
 import com.fishemi.mailengine.enumerator.TemplateNameEnum;
+import jakarta.annotation.Nullable;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.time.Year;
 import java.util.Map;
 import java.util.UUID;
 
@@ -55,7 +58,7 @@ public class MailSenderService {
   }
 
   public String getCampaignHtmlContent(
-    final UUID eventId,
+    @Nullable final UUID eventId,
     final TemplateNameEnum templateName,
     final String companyName,
     final CampaignEmailEventEmployeeDto employee,
@@ -64,37 +67,44 @@ public class MailSenderService {
   ) {
     // create mail content
     final String logoTrackingPixelUrl = UriComponentsBuilder.fromUriString(this.apiUrl)
-      .path("/assets/cdn/images/logo/100x100/" + templateName.toString().toLowerCase() + "/" + eventId.toString() + ".png")
+      .path("/assets/cdn/images/logo/100x100/" + templateName.toString().toLowerCase() + "/" + eventId + ".png")
       .toUriString();
     final String formUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
-      .path("/assets/" + companyName.replaceAll("\s*", "-").toLowerCase() + "/sso/my-account/update-credentials/" + eventId.toString())
+      .path("/assets/" + companyName.replaceAll("\\s", "-").toLowerCase() + "/sso/my-account/update-credentials/" + eventId)
       .toUriString();
 
-    htmlParagraphContent = htmlParagraphContent.replaceAll("\\{\\{employeeName}}", employee.getFullName())
-      .replaceAll("\\{\\{boutton}}", """
-        <a
-          data-linkindex="0" rel="noopener noreferrer"
-          style="display:inline-block; background:#2172b9; color:white; font-family:Helvetica,Arial,sans-serif; font-size:14px; font-weight:600; margin:0; text-decoration:none; text-transform:none; padding:0px 25px 10px 25px; border-radius:0"
-          href="%s"
-        >
-          Modifier votre mot de passe
-        </a>
-        """.formatted(formUrl))
-      .replaceAll("\\{\\{employeeEmail}}", employee.getEmail());
+    String templatePath;
+    String buttonContent;
+    switch (templateName) {
+      case TemplateNameEnum.GOOGLE -> {
+        templatePath = "google.html";
+        buttonContent = MailButtonConstant.GOOGLE;
+      }
+      case TemplateNameEnum.MICROSOFT -> {
+        templatePath = "microsoft.html";
+        buttonContent = MailButtonConstant.MICROSOFT;
+      }
+      default -> {
+        templatePath = "plain.html";
+        buttonContent = MailButtonConstant.PLAIN;
+      }
+    }
+
+    htmlParagraphContent = htmlParagraphContent
+      .replace("{{employeeName}}", employee.getFullName())
+      .replace("{{boutton}}", buttonContent.formatted(formUrl))
+      .replace("{{employeeEmail}}", employee.getEmail());
 
     final Context context = getThymeleafContext(Map.of(
       "fullName", employee.getFullName(),
       "email", employee.getEmail(),
       "subject", subject,
-      "formUrl", formUrl,
       "htmlParagraphContent", htmlParagraphContent,
-      "logoTrackingPixelUrl", logoTrackingPixelUrl
+      "logoTrackingPixelUrl", logoTrackingPixelUrl,
+      "currentYear", Year.now().getValue(),
+      "companyName", companyName
     ));
-    return switch (templateName) {
-      case TemplateNameEnum.GOOGLE -> this.templateEngine.process("google.html", context);
-      case TemplateNameEnum.MICROSOFT -> this.templateEngine.process("microsoft.html", context);
-      default -> this.templateEngine.process("plain.html", context);
-    };
+    return this.templateEngine.process(templatePath, context);
   }
 
   public String getLoginHtmlContent(final LoginEmailEventDto message) {

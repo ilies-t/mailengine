@@ -1,18 +1,13 @@
 package com.fishemi.mailengine.controller;
 
-import com.fishemi.mailengine.dto.CampaignEmailEventEmployeeDto;
+import com.fishemi.mailengine.dto.CampaignMailTestDto;
 import com.fishemi.mailengine.dto.LoginEmailEventDto;
-import com.fishemi.mailengine.enumerator.TemplateNameEnum;
 import com.fishemi.mailengine.service.MailSenderService;
-import com.fishemi.mailengine.service.MailingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -31,19 +26,15 @@ public class MailTestController {
   }
 
   @PostMapping("/campaign-email-test")
-  public ResponseEntity<String> getCampaignMailTest(
-    @RequestParam TemplateNameEnum templateName,
-    @RequestBody CampaignEmailEventEmployeeDto campaignEmailEventEmployeeDto
-  ) {
-    log.info("HTTP handling getCampaignMailTest, templateName={}, loginEmailEventDto={}",
-      templateName, campaignEmailEventEmployeeDto);
+  public ResponseEntity<String> getCampaignMailTest(@RequestBody CampaignMailTestDto body) {
+    log.info("HTTP handling getCampaignMailTest, companyName={}, subject={}", body.getCompanyName(), body.getSubject());
     return ResponseEntity.ok(this.mailSenderService.getCampaignHtmlContent(
-      UUID.randomUUID(),
-      templateName,
-      "My company name",
-      campaignEmailEventEmployeeDto,
-      "text content",
-      "Email subject here"
+      null,
+      body.getTemplateName(),
+      body.getCompanyName(),
+      body.getEmployee(),
+      body.getHtmlParagraphContent(),
+      body.getSubject()
     ));
   }
 }
