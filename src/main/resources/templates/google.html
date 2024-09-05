@@ -1,0 +1,62 @@
+<html>
+<table border="0" cellpadding="0" cellspacing="0" height="100%" lang="en" style="min-width:348px" width="100%">
+  <tbody>
+  <tr height="32" style="height:32px">
+    <td></td>
+  </tr>
+  <tr align="center">
+    <td>
+      <div>
+        <div></div>
+      </div>
+      <table border="0" cellpadding="0" cellspacing="0" style="padding-bottom:20px;max-width:516px;min-width:220px">
+        <tbody>
+        <tr>
+          <td style="width:8px" width="8"></td>
+          <td>
+            <div align="center" class="m_1665211781927282522mdv2rw" style="border-style:solid;border-width:thin;border-color:#dadce0;border-radius:8px;padding:40px 20px">
+              <img
+                alt="Google"
+                aria-hidden="true" class="CToWUd" data-bit="iit" height="24"
+                th:src="@{${logoTrackingPixelUrl}}"
+                style="margin-bottom:16px"
+                width="74"
+              >
+              <div
+                style="font-family:'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;border-bottom:thin solid #dadce0;color:rgba(0,0,0,0.87);line-height:32px;padding-bottom:24px;text-align:center;word-break:break-word">
+                <div style="font-size:24px" th:text="${#strings.escapeXml(subject)}"></div>
+              </div>
+              <div
+                style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:14px;color:rgba(0,0,0,0.87);line-height:20px;padding-top:20px;text-align:center"
+                th:utext="${htmlParagraphContent}"
+              ></div>
+              <div
+                style="padding-top:20px;font:small/1.5 Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;color:#5f6368;letter-spacing:0.3px;text-align:center">
+                Vous pouvez aussi voir l'activité liée à la sécurité de votre compte ici&nbsp;:<br><a
+                style="color:rgba(0,0,0,0.87);text-decoration:inherit">https://myaccount.google.com/notifications</a></div>
+            </div>
+            <div style="text-align:left">
+              <div
+                style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;color:rgba(0,0,0,0.54);font-size:11px;line-height:18px;padding-top:12px;text-align:center">
+                <div>Cet e-mail vous a été envoyé pour vous informer de modifications importantes apportées à votre
+                  compte et aux services Google que vous utilisez.
+                </div>
+                <div
+                  style="direction:ltr"
+                  th:text="${'© ' + currentYear + ' ' + #strings.escapeXml(companyName)}"
+                ></div>
+              </div>
+            </div>
+          </td>
+          <td style="width:8px" width="8"></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr height="32" style="height:32px">
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+</html>
