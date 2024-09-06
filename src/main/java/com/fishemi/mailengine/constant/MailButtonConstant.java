@@ -29,6 +29,9 @@ public class MailButtonConstant {
     """;
 
   public static final String PLAIN = """
-        <a href="%s" class="button">Réinitialiser le mot de passe</a>
+        <a href="%s" style="display:block;background-color:#007BFF;color:#ffffff;width:fit-content;text-decoration:none;border-radius:5px;font-size:16px;white-space:nowrap;padding:10px 20px;"
+        >
+          Réinitialiser le mot de passe
+        </a>
     """;
 }
