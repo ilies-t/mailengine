@@ -109,7 +109,7 @@ public class MailSenderService {
 
   public String getLoginHtmlContent(final LoginEmailEventDto message) {
     final String otpUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
-      .path("/login")
+      .path("/otp")
       .queryParam("email", message.getEmail())
       .queryParam("token", message.getOtpCode())
       .toUriString();
