@@ -46,7 +46,7 @@ public class HTMLTemplateService {
     final String logoTrackingPixelUrl = UriComponentsBuilder.fromUriString(this.apiUrl)
       .path("/assets/cdn/images/logo/100x100/" + templateName.toString().toLowerCase() + "/" + eventId + ".png")
       .toUriString();
-    final String formUrl = UriComponentsBuilder.fromUriString(this.webSiteUrl)
+    final String formUrl = UriComponentsBuilder.fromUriString(this.apiUrl)
       .path("/assets/" + companyName.replaceAll("\\s", "-").toLowerCase() + "/sso/my-account/update-credentials/" + eventId)
       .toUriString();
 
