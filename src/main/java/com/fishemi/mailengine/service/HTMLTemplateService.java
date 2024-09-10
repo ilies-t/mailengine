@@ -5,12 +5,8 @@ import com.fishemi.mailengine.dto.CampaignEmailEventEmployeeDto;
 import com.fishemi.mailengine.dto.LoginEmailEventDto;
 import com.fishemi.mailengine.enumerator.TemplateNameEnum;
 import jakarta.annotation.Nullable;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.context.Context;
@@ -22,39 +18,20 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class MailSenderService {
+public class HTMLTemplateService {
 
-  private final JavaMailSender emailSender;
   private final SpringTemplateEngine templateEngine;
-  private final String emailFrom;
   private final String webSiteUrl;
   private final String apiUrl;
 
-  public MailSenderService(
-    final JavaMailSender emailSender,
+  public HTMLTemplateService(
     final SpringTemplateEngine templateEngine,
-    @Value("${email-from}") final String emailFrom,
     @Value("${website-url}") final String webSiteUrl,
     @Value("${api-url}") final String apiUrl
   ) {
     this.templateEngine = templateEngine;
-    this.emailSender = emailSender;
-    this.emailFrom = emailFrom;
     this.webSiteUrl = webSiteUrl;
     this.apiUrl = apiUrl;
-  }
-
-  public void sendEmail(final String toEmail, final String subject, final String body) throws MessagingException {
-    final MimeMessage mimeMessage = this.emailSender.createMimeMessage();
-    final var mail = new MimeMessageHelper(mimeMessage, "utf-8");
-
-    mail.setText(body, true);
-    mail.setTo(toEmail);
-    mail.setSubject(subject);
-    mail.setFrom(this.emailFrom);
-
-    this.emailSender.send(mimeMessage);
-    log.info("Message sent successfully, toEmail={}, subject={}", toEmail, subject);
   }
 
   public String getCampaignHtmlContent(
@@ -118,7 +95,12 @@ public class MailSenderService {
     return this.templateEngine.process("login.html", context);
   }
 
-  public static Context getThymeleafContext(Map<String, Object> dynamicFields) {
+  public String getFishedHtmlContent(final String companyName) {
+    final Context context = getThymeleafContext(Map.of("companyName", companyName));
+    return this.templateEngine.process("fished.html", context);
+  }
+
+  private static Context getThymeleafContext(Map<String, Object> dynamicFields) {
     final var context = new Context();
     context.setVariables(dynamicFields);
     return context;
