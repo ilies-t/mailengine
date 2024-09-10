@@ -6,12 +6,14 @@ import com.fishemi.mailengine.entity.EventEntity;
 import com.fishemi.mailengine.enumerator.TemplateNameEnum;
 import com.fishemi.mailengine.repository.EventRepository;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +24,10 @@ class MailingServiceTest {
   public EventRepository eventRepository;
 
   @Mock
-  public MailSenderService mailSenderService;
+  public HTMLTemplateService htmlTemplateService;
+
+  @Mock
+  public JavaMailSender emailSender;
 
   @InjectMocks
   public MailingService mailingService;
@@ -46,9 +51,8 @@ class MailingServiceTest {
     message.setEmployees(employees);
 
     // when
-    Mockito.doNothing().when(this.mailSenderService)
-      .sendEmail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
-    Mockito.when(this.mailSenderService.getCampaignHtmlContent(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+    Mockito.doNothing().when(this.emailSender).send((MimeMessage) Mockito.any());
+    Mockito.when(this.htmlTemplateService.getCampaignHtmlContent(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
       .thenReturn("<h1>Title</h1>");
     Mockito.when(this.eventRepository.save(Mockito.any())).thenReturn(new EventEntity());
     this.mailingService.handleCampaignEmailEventQueue(message);
