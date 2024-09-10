@@ -5,11 +5,10 @@ import com.fishemi.mailengine.dto.CampaignEmailEventEmployeeDto;
 import com.fishemi.mailengine.entity.EventEntity;
 import com.fishemi.mailengine.enumerator.TemplateNameEnum;
 import com.fishemi.mailengine.repository.EventRepository;
-import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,16 +28,21 @@ class MailingServiceTest {
   @Mock
   public JavaMailSender emailSender;
 
-  @InjectMocks
   public MailingService mailingService;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
+    this.mailingService = new MailingService(
+      this.htmlTemplateService,
+      this.eventRepository,
+      this.emailSender,
+      "test@fishemi.com"
+    );
   }
 
   @Test
-  void handleCampaignEmailEventQueue_test() throws MessagingException {
+  void handleCampaignEmailEventQueue_test() {
     // given
     final List<CampaignEmailEventEmployeeDto> employees = List.of(
       CampaignEmailEventEmployeeDto.builder().id(UUID.randomUUID().toString()).email("email-1@gmail.com").fullName("Email 1").build(),
@@ -49,8 +53,11 @@ class MailingServiceTest {
     message.setCampaignId(UUID.randomUUID());
     message.setTemplateName(TemplateNameEnum.GOOGLE);
     message.setEmployees(employees);
+    message.setSubject("Subject");
 
     // when
+    final var mimeMessage = new MimeMessage((Session)null);
+    Mockito.when(this.emailSender.createMimeMessage()).thenReturn(mimeMessage);
     Mockito.doNothing().when(this.emailSender).send((MimeMessage) Mockito.any());
     Mockito.when(this.htmlTemplateService.getCampaignHtmlContent(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
       .thenReturn("<h1>Title</h1>");
