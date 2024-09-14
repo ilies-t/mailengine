@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CampaignEmailEventEmployeeDto {
-  public UUID id;
+  private String id;
   private String email;
 
   @JsonProperty("full_name")
